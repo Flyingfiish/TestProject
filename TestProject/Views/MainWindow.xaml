@@ -1,0 +1,43 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestProject"
+        xmlns:ViewModels="clr-namespace:TestProject.ViewModels" x:Class="TestProject.Views.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="350">
+    <Grid>
+        <Grid.DataContext>
+            <ViewModels:MainWindowViewModel/>
+        </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Row="0" Width="225" Height="20" HorizontalAlignment="Left" Margin="25 0" Text="{Binding Directory}"></TextBox>
+        <Button Content="Найти" Grid.Row="0" Height="20" Width="50" HorizontalAlignment="Right" Margin="25 0" Command="{Binding GetDllFilesCommand}"></Button>
+        <ListBox  Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible" VirtualizingPanel.ScrollUnit="Pixel" ItemsSource="{Binding DllAssemblies}" Width="300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding Path=Name}"></TextBlock>
+                        <ListBox BorderBrush="Transparent" ItemsSource="{Binding DllClasses}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{Binding Path=Name}"></TextBlock>
+                                        <TextBlock Text="public:"></TextBlock>
+                                        <ListBox BorderBrush="Transparent" ItemsSource="{Binding PublicClasses}"/>
+                                        <TextBlock Text="protected:"></TextBlock>
+                                        <ListBox BorderBrush="Transparent" ItemsSource="{Binding ProtectedClasses}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
